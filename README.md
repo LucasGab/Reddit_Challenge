@@ -41,6 +41,12 @@ The server has the swagger documentation and the endpoint to get the saved reddi
 
 ## Tests
 
+Just run:
+
+```bash
+pytest onaroll_reddit/tests
+```
+
 ## Future work
 
 The project can have some improvements:

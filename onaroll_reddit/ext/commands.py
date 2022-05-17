@@ -17,6 +17,18 @@ def drop_db():
     db.drop_all()
 
 
+def populate_db_test():
+    """Populate DB for testing purposes"""
+    data = [
+        RedditPost(id=1, title="Post 1", ups="92310"),
+        RedditPost(id=2, title="Post 2", ups="13425"),
+        RedditPost(id=3, title="Post 2", ups="20223"),
+    ]
+    db.session.bulk_save_objects(data)
+    db.session.commit()
+    return RedditPost.query.all()
+
+
 def update_posts_process():
     """Retrieve and update from top posts"""
     actual_posts = RedditPost.query.all()
