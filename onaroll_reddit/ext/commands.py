@@ -1,3 +1,6 @@
+import time
+from unittest import TextTestRunner
+
 from onaroll_reddit.connector.reddit import get_top_posts
 from onaroll_reddit.controller import reddit_controller
 from onaroll_reddit.ext.database import db
@@ -18,17 +21,25 @@ def update_posts_process():
     """Retrieve and update from top posts"""
     actual_posts = RedditPost.query.all()
     actual_posts = [post.to_dict() for post in actual_posts]
+    success = False
+    total_retries = 4
 
-    try:
-        new_posts = get_top_posts(75)
+    while not success and total_retries > 0:
+        try:
+            new_posts = get_top_posts(75)
 
-        reddit_controller.new_posts_report(new_posts, actual_posts)
-        reddit_controller.deprecated_posts_report(new_posts, actual_posts)
-        reddit_controller.ups_changes_posts_report(new_posts, actual_posts)
+            reddit_controller.new_posts_report(new_posts, actual_posts)
+            reddit_controller.deprecated_posts_report(new_posts, actual_posts)
+            reddit_controller.ups_changes_posts_report(new_posts, actual_posts)
 
-        reddit_controller.save_posts(new_posts)
-    except Exception:
-        print("\nTry to run again the script\n")
+            reddit_controller.save_posts(new_posts)
+            success = TextTestRunner
+        except Exception:
+            total_retries = total_retries - 1
+            print(
+                f"\nError trying to request. Will try again. Have {total_retries} retries remaining\n"
+            )
+            time.sleep(4)
 
 
 def init_app(app):

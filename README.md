@@ -27,6 +27,8 @@ To run the proccess to get the reports, use:
 make run_process
 ```
 
+Maybe can get status 429 on reddit endpoint, if so, just retry until work.
+
 ## Server
 
 The project is a flask server. To run the server run:
