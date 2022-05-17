@@ -1,0 +1,22 @@
+[default]
+DEBUG = false
+TITLE = "OnaRoll_Reddit"
+SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+EXTENSIONS = [
+    "onaroll_reddit.ext.database:init_app",
+    "onaroll_reddit.ext.commands:init_app",
+    "onaroll_reddit.blueprints.restapi:init_app",
+]
+
+
+[development]
+EXTENSIONS = [
+    "dynaconf_merge_unique"  # to reuse extensions list from [default]
+]
+DEBUG = true
+
+[testing]
+SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
+
+[production]
+SQLALCHEMY_DATABASE_URI = 'sqlite:///production.db'
